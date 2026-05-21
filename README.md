@@ -4,6 +4,8 @@
 
 実行はrootでおこなう。
 
+memo .venv_gpu312\Scripts\Activate.ps1
+
 ## 実行順序
 
 1. 動画ID一覧取得
