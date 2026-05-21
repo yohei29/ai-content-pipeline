@@ -10,7 +10,7 @@ from src.config import constants
 from src.config import settings
 from yt_dlp.utils import DateRange
 
-#
+# custom utils
 from src.utils.work_paths import WorkPaths
 
 # init
@@ -22,7 +22,50 @@ raw_metadata_movie_info_dir.mkdir(parents=True, exist_ok=True)
 movie_ids_file_path = WorkPaths.get_movie_ids_file_path()
 Path(movie_ids_file_path).write_text("", encoding="utf-8")
 
+# local variable
 _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
+
+
+
+# --------------------------------------------------
+# メイン
+# --------------------------------------------------
+
+def main():
+  entries = fetch_channel_video_list(_channel_url)
+
+  results = []
+
+  for entry in entries:
+
+    video_id = entry.get("id")
+
+    if not video_id:
+        continue
+
+    video_url = f"{constants.YOUTUBE_BASE_URL}{video_id}"
+
+    try:
+      detail = fetch_video_detail(video_url)
+    except Exception as e:
+      print("================================")
+      print("取得失敗")
+      print(video_url)
+      print(e)
+      print("================================")
+      continue
+
+    upload_date = detail.get("upload_date")
+
+    if not is_target_date(upload_date):
+        continue
+
+    print(f"取得中: {video_id}")
+    results.append(detail)
+
+  print(f"取得件数: {len(results)}")
+  save_video_infos(results)
+
 
 # --------------------------------------------------
 # 日付判定
@@ -30,6 +73,7 @@ _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
 
 _date_from = "20260501"
 _date_to   = "20260531"
+
 
 def is_target_date(upload_date: str) -> bool:
 
@@ -150,42 +194,5 @@ def save_video_infos(video_infos):
 
     print(f"保存完了: {output_ids_path} / {output_info_path}")
 
-# --------------------------------------------------
-# メイン
-# --------------------------------------------------
-
 if __name__ == "__main__":
-
-  entries = fetch_channel_video_list(_channel_url)
-
-  results = []
-
-  for entry in entries:
-
-    video_id = entry.get("id")
-
-    if not video_id:
-        continue
-
-    video_url = f"{constants.YOUTUBE_BASE_URL}{video_id}"
-
-    try:
-      detail = fetch_video_detail(video_url)
-    except Exception as e:
-      print("================================")
-      print("取得失敗")
-      print(video_url)
-      print(e)
-      print("================================")
-      continue
-
-    upload_date = detail.get("upload_date")
-
-    if not is_target_date(upload_date):
-        continue
-
-    print(f"取得中: {video_id}")
-    results.append(detail)
-
-  print(f"取得件数: {len(results)}")
-  save_video_infos(results)
+  main()
