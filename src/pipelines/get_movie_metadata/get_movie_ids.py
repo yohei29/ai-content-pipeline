@@ -127,9 +127,9 @@ def save_video_infos(video_infos):
   for item in video_infos:
     output_ids_path   = f"{constants.RAW_METADATA_DIR}{constants.MOVIE_IDS_FILE}"
     output_info_path  = f"{constants.RAW_METADATA_MOVIE_INFO_DIR}{item["id"]}_{constants.MOVIE_INFO_FILE}"
-    with open(output_ids_path, "a", newline="", encoding="utf-8-sig") as f:
+    with open(output_ids_path, "a", newline="", encoding=f"{settings.ENCODING}") as f:
       f.write(f"{item['id']}\n")
-    with open(output_info_path, "w", newline="", encoding="utf-8-sig") as f:
+    with open(output_info_path, "w", newline="", encoding=f"{settings.ENCODING}") as f:
       writer = csv.writer(f)
       writer.writerow([
           item["id"],
