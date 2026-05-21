@@ -5,7 +5,14 @@
 実行はrootでおこなう。
 
 ```
-python -m src.get_movie_metadata.get_movie_i
+python -m src.get_movie_metadata.get_movie_ids
+```
+
+## 実行順序
+
+1. 動画ID一覧取得
+```
+python -m src.get_movie_metadata.get_movie_ids
 ```
 
 ---
