@@ -4,15 +4,16 @@
 
 実行はrootでおこなう。
 
-```
-python -m src.get_movie_metadata.get_movie_ids
-```
-
 ## 実行順序
 
 1. 動画ID一覧取得
 ```
-python -m src.get_movie_metadata.get_movie_ids
+python -m src.pipelines.get_movie_metadata.get_movie_ids
+```
+
+2. 動画取得
+```
+python -m src.pipelines.youtube_work.youtube_download
 ```
 
 ---

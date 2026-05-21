@@ -8,12 +8,19 @@ import csv
 import yt_dlp
 from src.config import constants
 from src.config import settings
+from yt_dlp.utils import DateRange
 
+#
+from src.utils.work_paths import WorkPaths
+
+# init
 from pathlib import Path
 raw_metadata_dir = Path(f"{constants.RAW_METADATA_DIR}")
 raw_metadata_dir.mkdir(parents=True, exist_ok=True)
 raw_metadata_movie_info_dir = Path(f"{constants.RAW_METADATA_DIR}")
 raw_metadata_movie_info_dir.mkdir(parents=True, exist_ok=True)
+movie_ids_file_path = WorkPaths.get_movie_ids_file_path()
+Path(movie_ids_file_path).write_text("", encoding="utf-8")
 
 _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
 
@@ -21,8 +28,8 @@ _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
 # 日付判定
 # --------------------------------------------------
 
-_date_from = "20250101"
-_date_to   = "20261231"
+_date_from = "20260501"
+_date_to   = "20260531"
 
 def is_target_date(upload_date: str) -> bool:
 
@@ -48,6 +55,8 @@ def fetch_channel_video_list(channel_url: str):
     "extract_flat": True,
     "skip_download": True,
     "quiet": False,
+    "daterange": DateRange(_date_from, _date_to),
+    "playlistend": 5,  # 最初の5件だけを取得（1からカウント）
   }
 
   with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -125,7 +134,7 @@ def save_csv_video_infos(video_infos, output_path):
 
 def save_video_infos(video_infos):
   for item in video_infos:
-    output_ids_path   = f"{constants.RAW_METADATA_DIR}{constants.MOVIE_IDS_FILE}"
+    output_ids_path   = movie_ids_file_path
     output_info_path  = f"{constants.RAW_METADATA_MOVIE_INFO_DIR}{item["id"]}_{constants.MOVIE_INFO_FILE}"
     with open(output_ids_path, "a", newline="", encoding=f"{settings.ENCODING}") as f:
       f.write(f"{item['id']}\n")
@@ -147,7 +156,6 @@ def save_video_infos(video_infos):
 
 if __name__ == "__main__":
 
-  
   entries = fetch_channel_video_list(_channel_url)
 
   results = []
