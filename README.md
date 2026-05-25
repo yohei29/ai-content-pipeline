@@ -1,5 +1,13 @@
 # README
 ---
+## 環境構築
+
+python モジュールインストール
+
+```
+pip install -r requirements.txt
+```
+---
 ## 実行
 
 実行はrootでおこなう。
