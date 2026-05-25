@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 実行はrootでおこなう。
 
-memo .venv_gpu312\Scripts\Activate.ps1
+memo .venv\Scripts\Activate.ps1
 
 ## 実行順序
 
