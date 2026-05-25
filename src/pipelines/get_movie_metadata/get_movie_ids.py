@@ -24,11 +24,15 @@ Path(movie_ids_file_path).write_text("", encoding="utf-8")
 
 # local variable
 _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
-
+# _date_from = "20260501" _date_to   = "20260531"
+_date_from = "20260101"
+_date_to   = "20260430"
+_get_max_movie_ids = 5;
 
 
 # --------------------------------------------------
 # メイン
+# python -m src.pipelines.get_movie_metadata.get_movie_ids
 # --------------------------------------------------
 
 def main():
@@ -70,11 +74,6 @@ def main():
 # --------------------------------------------------
 # 日付判定
 # --------------------------------------------------
-
-_date_from = "20260501"
-_date_to   = "20260531"
-
-
 def is_target_date(upload_date: str) -> bool:
 
   if upload_date is None:
@@ -100,7 +99,7 @@ def fetch_channel_video_list(channel_url: str):
     "skip_download": True,
     "quiet": False,
     "daterange": DateRange(_date_from, _date_to),
-    "playlistend": 5,  # 最初の5件だけを取得（1からカウント）
+    # "playlistend": 5,  # 最初の5件だけを取得（1からカウント）
   }
 
   with yt_dlp.YoutubeDL(ydl_opts) as ydl:
