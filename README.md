@@ -2,6 +2,8 @@
 ---
 ## 環境構築
 
+venvのインストール
+
 Python環境構築
 ```
 py -3.12 -m venv .venv
