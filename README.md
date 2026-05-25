@@ -2,11 +2,11 @@
 ---
 ## 環境構築
 
-Python環境構築
+1. venvのインストール
+2. Python環境構築
 ```
 py -3.12 -m venv .venv
 ```
-
 起動
 ```
 # PowerShellの場合
@@ -16,16 +16,17 @@ py -3.12 -m venv .venv
 .venv\Scripts\activate.bat
 ```
 
-python モジュールインストール
+3. python モジュールインストール
 ```
 pip install -r requirements.txt
 ```
+
 ---
 ## 実行
 
 実行はrootでおこなう。
 
-memo .venv_gpu312\Scripts\Activate.ps1
+memo .venv\Scripts\Activate.ps1
 
 ## 実行順序
 
