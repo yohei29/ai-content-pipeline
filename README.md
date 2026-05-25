@@ -2,8 +2,21 @@
 ---
 ## 環境構築
 
-python モジュールインストール
+Python環境構築
+```
+py -3.12 -m venv .venv
+```
 
+起動
+```
+# PowerShellの場合
+.venv\Scripts\Activate.ps1
+
+# コマンドプロンプト(cmd)の場合
+.venv\Scripts\activate.bat
+```
+
+python モジュールインストール
 ```
 pip install -r requirements.txt
 ```
