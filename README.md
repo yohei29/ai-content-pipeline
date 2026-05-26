@@ -4,7 +4,8 @@
 
 1. venvのインストール
 2. node.jsのインストール
-3. Python環境構築
+3. ffmpegのインストール
+4. Python環境構築
 ```
 py -3.12 -m venv .venv
 ```
@@ -37,6 +38,11 @@ python -m src.pipelines.get_movie_metadata.get_movie_ids
 2. 動画取得
 ```
 python -m src.pipelines.youtube_work.youtube_download
+```
+
+3. 動画取得
+```
+python -m src.pipelines.youtube_work.youtube_movie_extrac
 ```
 
 ---
