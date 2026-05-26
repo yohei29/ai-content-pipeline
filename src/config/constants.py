@@ -3,9 +3,9 @@ NODE_PATH = "C:/Program Files/nodejs/node.exe"
 MP4_EXTENSION = ".mp4"
 WAV_EXTENSION = ".wav"
 
-YOUTUBE_API_KEY = 'AIzaSyC6eWq1SRZAItzwpGnu5G29huvBlqxASa0'
-GEMINI_API_KEY = 'AIzaSyA7bh9FPqD6HGnTvB_FiLR-WvMQsqfjz7Q'
-GEMINI_API_KEY_STEP2 = 'AIzaSyCIxqJYUqRyRphcYsyqG5zddkqf3rI6XLs'
+YOUTUBE_API_KEY = ''
+GEMINI_API_KEY = ''
+GEMINI_API_KEY_STEP2 = ''
 
 # 動画メタデータ取得
 ## 動画ID一覧取得関連
