@@ -1,4 +1,5 @@
 YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v="
+NODE_PATH = "C:/Program Files/nodejs/node.exe"
 MP4_EXTENSION = ".mp4"
 WAV_EXTENSION = ".wav"
 

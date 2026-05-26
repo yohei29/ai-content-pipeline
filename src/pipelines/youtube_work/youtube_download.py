@@ -10,6 +10,10 @@ from pathlib import Path
 # custom utils
 from src.utils.work_paths import WorkPaths
 
+# init
+from pathlib import Path
+raw_metadata_dir = Path(f"{constants.RAW_VIDEOS_DIR}")
+raw_metadata_dir.mkdir(parents=True, exist_ok=True)
 
 # --------------------------------------------------
 # メイン

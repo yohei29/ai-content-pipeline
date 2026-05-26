@@ -3,7 +3,8 @@
 ## 環境構築
 
 1. venvのインストール
-2. Python環境構築
+2. node.jsのインストール
+3. Python環境構築
 ```
 py -3.12 -m venv .venv
 ```
@@ -25,8 +26,6 @@ pip install -r requirements.txt
 ## 実行
 
 実行はrootでおこなう。
-
-memo .venv\Scripts\Activate.ps1
 
 ## 実行順序
 
