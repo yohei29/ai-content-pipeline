@@ -21,6 +21,11 @@ from src.config import settings
 # custom utils
 from src.utils.work_paths import WorkPaths
 
+# init
+from pathlib import Path
+raw_metadata_dir = Path(f"{constants.AI_AUDIO_TRANSCRIPTS_TEXT_DIR}")
+raw_metadata_dir.mkdir(parents=True, exist_ok=True)
+
 # --------------------------------------------------
 # メイン
 # --------------------------------------------------
@@ -70,7 +75,7 @@ def main():
       exit()
 
     print("音声ファイル書き込み開始")
-    youtube_audio_transcript_output_file_path = WorkPaths.get_audio_transcripts_text_path
+    youtube_audio_transcript_output_file_path = WorkPaths.get_audio_transcripts_text_path(youtube_id)
     with open(youtube_audio_transcript_output_file_path, "w", encoding="utf-8") as f:
       for i, seg in enumerate(result["segments"], start=1):
         f.write(f"{seg['text'].strip()}\n")

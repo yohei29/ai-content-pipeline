@@ -23,3 +23,9 @@ class WorkPaths:
 
   def put_archive_wav_path(youtube_id):
     return f"{constants.ARCHIVE_WAV_DIR}{youtube_id}{constants.WAV_EXTENSION}"
+
+  def get_prompts_step_prompt_file_path(work_dir):
+    return f"{work_dir}{constants.PROMPT_FILE}"
+
+  def get_prompts_step_ai_response_file_path(youtube_id, ai_response_file):
+    return f"{constants.AI_RESPONSE_DIR}{youtube_id}_{ai_response_file}"
