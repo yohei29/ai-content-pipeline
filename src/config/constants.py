@@ -26,8 +26,8 @@ ARCHIVE_WAV_DIR = "./archive/wav/"
 
 
 # ai step 共通
-AI_RESPONSE_DIR = "./ai_response/"
-CONTEXT_FILE = "context.md"
+AI_RESPONSE_DIR = "./data/processed/summaries/"
+PROMPT_FILE = "prompt.md"
 
 # step 1
 STEP1_GEMINI_API_KEY = "AIzaSyClu5hO2LY2qUrNFPHZExSKUj13_R27j5Y"
