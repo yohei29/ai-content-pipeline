@@ -24,37 +24,39 @@ AI_AUDIO_TRANSCRIPTS_TEXT_FILE = "audio_transcript_output_file.txt"
 ARCHIVE_MOVIE_DIR = "./archive/movie/"
 ARCHIVE_WAV_DIR = "./archive/wav/"
 
+LOGS_DIR = "./logs/"
+
 
 # ai step 共通
 AI_RESPONSE_DIR = "./data/processed/summaries/"
 PROMPT_FILE = "prompt.md"
 
 # step 1
-STEP1_GEMINI_API_KEY = "AIzaSyClu5hO2LY2qUrNFPHZExSKUj13_R27j5Y"
-STEP1_WORK_DIR = "./web_create_step/step1/"
+STEP1_GEMINI_API_KEY = ""
+STEP1_WORK_DIR = "./src/prompts/step1/"
 STEP1_AI_RESPONSE_FILE = "step1_ai_response_file.md"
 
 # step 2
 STEP2_GEMINI_API_KEY = "AIzaSyAb886Vqo3qVBZ3t3H4-VROWWVkLmGD9-8"
-STEP2_WORK_DIR = "./web_create_step/step2/"
+STEP2_WORK_DIR = "./src/prompts/step2/"
 STEP2_AI_RESPONSE_FILE = "step2_ai_response_file.json"
 
 # step 3
 STEP3_GEMINI_API_KEY = "AIzaSyCdLI3UeQtCa3xNCW6-MwBeNmPUuRp19WU"
-STEP3_WORK_DIR = "./web_create_step/step3/"
+STEP3_WORK_DIR = "./src/prompts/step3/"
 STEP3_AI_RESPONSE_FILE = "step3_ai_response_file.json"
 
 # step 4
 STEP4_GEMINI_API_KEY = "AIzaSyCkzgDe1FVr8zpTk0LUavRu75oApwxfQbY"
-STEP4_WORK_DIR = "./web_create_step/step4/"
+STEP4_WORK_DIR = "./src/prompts/step4/"
 STEP4_AI_RESPONSE_FILE = "step4_ai_response_file.json"
 
 # step 5
 STEP5_GEMINI_API_KEY = "AIzaSyB6sKuhDCIovHSBju352BvtoDjfqUiMDfY"
-STEP5_WORK_DIR = "./web_create_step/step5/"
+STEP5_WORK_DIR = "./src/prompts/step5/"
 STEP5_AI_RESPONSE_FILE = "step5_ai_response_file.json"
 
 # step 6
 STEP6_GEMINI_API_KEY = "AIzaSyAzjzAFykHzurex6Uo1lSCBEhKgQM0xV1s"
-STEP6_WORK_DIR = "./web_create_step/step6/"
+STEP6_WORK_DIR = "./src/prompts/step6/"
 STEP6_AI_RESPONSE_FILE = "step6_ai_response_file.json"
