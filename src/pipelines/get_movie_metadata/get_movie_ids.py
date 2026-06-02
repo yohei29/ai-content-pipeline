@@ -1,6 +1,6 @@
 # --------------------------------------------------
 # 動画ID一覧取得
-# _channel_url がある指定期間の動画IDを取得する。
+# _channel_url の動画IDを取得する。
 # python -m src.pipelines.get_movie_metadata.get_movie_ids
 # --------------------------------------------------
 
@@ -13,7 +13,6 @@ from src.utils.ssl_certs import configure_ssl_certs
 configure_ssl_certs()
 
 import yt_dlp
-from yt_dlp.utils import DateRange
 
 from src.config import constants, settings
 from src.utils.work_paths import WorkPaths
@@ -23,15 +22,13 @@ from src.utils.yt_dlp_opts import merge_ydl_opts
 # local constants（このファイル専用。constants.py とは別）
 # --------------------------------------------------
 _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
-_date_from = "20260101"
-_date_to = "20260430"
 _get_max_movie_ids = 10
 
 
 def main() -> None:
   setup_output_dirs()
-  entries = fetch_channel_video_list(_channel_url, _date_from, _date_to, _get_max_movie_ids)
-  video_infos, collect_stats = collect_video_infos(entries, _date_from, _date_to)
+  entries = fetch_channel_video_list(_channel_url, _get_max_movie_ids)
+  video_infos, collect_stats = collect_video_infos(entries)
   log_run_summary(video_infos, collect_stats, playlist_entries=len(entries))
   save_video_infos(video_infos)
 
@@ -59,14 +56,12 @@ def log_run_summary(
     f"実行日時: {now.strftime('%Y-%m-%d %H:%M:%S')}",
     f"チャンネルURL: {_channel_url}",
     f"取得URL: {_channel_url}/videos",
-    f"期間: {_date_from} ～ {_date_to}",
     f"最大取得数: {_get_max_movie_ids}",
     "",
     "=== 処理サマリ ===",
     f"プレイリスト件数: {playlist_entries}",
-    f"取得件数（期間内）: {count}",
+    f"取得件数: {count}",
     f"  詳細取得失敗: {collect_stats['fetch_failed']}",
-    f"  期間外で除外: {collect_stats['date_filtered']}",
     f"  IDなしでスキップ: {collect_stats['no_id']}",
   ]
 
@@ -75,20 +70,6 @@ def log_run_summary(
     lines.append("詳細取得失敗:")
     for item in collect_stats["fetch_failed_items"]:
       lines.append(f"  - {item['id']}: {item['error']}")
-
-  if collect_stats["date_filtered_items"]:
-    lines.append("")
-    lines.append("期間外で除外（upload_date が指定期間外）:")
-    for item in collect_stats["date_filtered_items"]:
-      lines.append(f"  - {item['id']}: upload_date={item['upload_date']}")
-
-  if count == 0 and playlist_entries > 0 and collect_stats["date_filtered"] > 0:
-    lines.append("")
-    lines.append(
-      "※ プレイリストには動画がありますが、期間内の動画は0件です。"
-      f" 直近の upload_date が {_date_to} より後の可能性があります。"
-      " _date_to を延ばすか、期間を見直してください。"
-    )
 
   if video_infos:
     lines.append("")
@@ -99,18 +80,16 @@ def log_run_summary(
   log_path.write_text("\n".join(lines) + "\n", encoding=settings.ENCODING)
   print(f"取得件数: {count}（プレイリスト: {playlist_entries}件）")
   if count == 0 and playlist_entries > 0:
-    print(f"  → 期間外除外: {collect_stats['date_filtered']}件, 詳細取得失敗: {collect_stats['fetch_failed']}件")
+    print(f"  → 詳細取得失敗: {collect_stats['fetch_failed']}件")
   print(f"ログ保存: {log_path}")
 
 
-def collect_video_infos(entries: list, date_from: str, date_to: str) -> tuple[list[dict], dict]:
+def collect_video_infos(entries: list) -> tuple[list[dict], dict]:
   results = []
   stats = {
     "no_id": 0,
     "fetch_failed": 0,
-    "date_filtered": 0,
     "fetch_failed_items": [],
-    "date_filtered_items": [],
   }
 
   for entry in entries:
@@ -135,42 +114,20 @@ def collect_video_infos(entries: list, date_from: str, date_to: str) -> tuple[li
       print("================================")
       continue
 
-    upload_date = detail.get("upload_date")
-    if not is_target_date(upload_date, date_from, date_to):
-      stats["date_filtered"] += 1
-      stats["date_filtered_items"].append({
-        "id": video_id,
-        "upload_date": upload_date,
-      })
-      continue
-
     print(f"取得中: {video_id}")
     results.append(detail)
 
   return results, stats
 
 
-def is_target_date(upload_date: str | None, date_from: str, date_to: str) -> bool:
-  if upload_date is None:
-    return False
-  if date_from and upload_date < date_from:
-    return False
-  if date_to and upload_date > date_to:
-    return False
-  return True
-
-
 def fetch_channel_video_list(
   channel_url: str,
-  date_from: str,
-  date_to: str,
   max_count: int | None = None,
 ) -> list:
   ydl_opts = merge_ydl_opts({
     "extract_flat": True,
     "skip_download": True,
     "quiet": False,
-    "daterange": DateRange(date_from, date_to),
   })
   if max_count:
     ydl_opts["playlistend"] = max_count
