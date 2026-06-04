@@ -33,5 +33,11 @@ class WorkPaths:
   def get_movie_score_output_path():
     return f"{constants.MOVIE_SCORE_OUTPUT_DIR}{constants.MOVIE_SCORE_OUTPUT_FILE}"
 
+  def get_movie_score_rejected_output_path():
+    return f"{constants.MOVIE_SCORE_OUTPUT_DIR}{constants.MOVIE_SCORE_REJECTED_FILE}"
+
   def get_movie_score_prompt_file_path():
     return f"{constants.MOVIE_SCORE_WORK_DIR}{constants.PROMPT_FILE}"
+
+  def get_archive_movie_score_path():
+    return f"{constants.ARCHIVE_MOVIE_SCORE_DIR}{constants.ARCHIVE_MOVIE_SCORE_FILE}"

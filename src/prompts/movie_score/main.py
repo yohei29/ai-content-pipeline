@@ -8,10 +8,11 @@ from src.config import settings
 from src.utils.work_paths import WorkPaths
 
 Path(constants.MOVIE_SCORE_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+Path(constants.ARCHIVE_MOVIE_SCORE_DIR).mkdir(parents=True, exist_ok=True)
 
 client = genai.Client(api_key=constants.MOVIE_SCORE_GEMINI_API_KEY)
 
-CSV_HEADER = "動画ID,学術・心理的実用性,合理性・教訓的価値,哲学的客観性,ゴシップ・娯楽ノイズ,総合推奨度スコア,評価理由・分析"
+CSV_HEADER = "動画ID,学術・心理的実用性,合理性・教訓的価値,哲学的客観性,ゴシップ・娯楽ノイズ,総合推奨度スコア,評価結果,理由・分析"
 
 
 def extract_data_row(response_text: str) -> str:
@@ -31,10 +32,12 @@ def main():
         youtube_ids = [row[0] for row in reader if row]
 
     output_path = WorkPaths.get_movie_score_output_path()
+    rejected_path = WorkPaths.get_movie_score_rejected_output_path()
 
     # ヘッダー行を書き込む（上書き）
-    with open(output_path, "w", encoding="utf-8", newline='') as f:
-        f.write(CSV_HEADER + "\n")
+    for path in (output_path, rejected_path):
+        with open(path, "w", encoding="utf-8", newline='') as f:
+            f.write(CSV_HEADER + "\n")
 
     with open(WorkPaths.get_movie_score_prompt_file_path(), "r", encoding="utf-8") as f:
         base_prompt = f.read()
@@ -56,7 +59,17 @@ def main():
             data_row = extract_data_row(response.text.strip())
             row_with_id = f"{youtube_id},{data_row}"
 
-            with open(output_path, "a", encoding="utf-8", newline='') as f:
+            parsed = next(csv.reader([row_with_id]))
+            is_adopted = len(parsed) > 6 and parsed[6].strip() == "採用"
+            dest_path = output_path if is_adopted else rejected_path
+            with open(dest_path, "a", encoding="utf-8", newline='') as f:
+                f.write(row_with_id + "\n")
+
+            archive_path = WorkPaths.get_archive_movie_score_path()
+            archive_needs_header = not Path(archive_path).exists() or Path(archive_path).stat().st_size == 0
+            with open(archive_path, "a", encoding="utf-8", newline='') as f:
+                if archive_needs_header:
+                    f.write(CSV_HEADER + "\n")
                 f.write(row_with_id + "\n")
 
             print(f"success: {youtube_id}")
