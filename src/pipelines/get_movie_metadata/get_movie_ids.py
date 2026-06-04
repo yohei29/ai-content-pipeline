@@ -22,13 +22,14 @@ from src.utils.yt_dlp_opts import merge_ydl_opts
 # local constants（このファイル専用。constants.py とは別）
 # --------------------------------------------------
 _channel_url = "https://www.youtube.com/@KanaeVCriminologist/streams"
-_get_max_movie_ids = 10
+_get_max_movie_ids = 1
 
 
 def main() -> None:
   setup_output_dirs()
   entries = fetch_channel_video_list(_channel_url, _get_max_movie_ids)
-  video_infos, collect_stats = collect_video_infos(entries)
+  existing_ids = build_existing_ids()
+  video_infos, collect_stats = collect_video_infos(entries, existing_ids)
   log_run_summary(video_infos, collect_stats, playlist_entries=len(entries))
   save_video_infos(video_infos)
 
@@ -63,6 +64,7 @@ def log_run_summary(
     f"取得件数: {count}",
     f"  詳細取得失敗: {collect_stats['fetch_failed']}",
     f"  IDなしでスキップ: {collect_stats['no_id']}",
+    f"  既存IDスキップ: {collect_stats['skipped']}",
   ]
 
   if collect_stats["fetch_failed_items"]:
@@ -84,10 +86,22 @@ def log_run_summary(
   print(f"ログ保存: {log_path}")
 
 
-def collect_video_infos(entries: list) -> tuple[list[dict], dict]:
+def build_existing_ids() -> set[str]:
+  existing = set()
+  for directory in (constants.ARCHIVE_MOVIE_DIR, constants.RAW_VIDEOS_DIR):
+    p = Path(directory)
+    if p.exists():
+      for f in p.iterdir():
+        if f.is_file():
+          existing.add(f.stem)
+  return existing
+
+
+def collect_video_infos(entries: list, existing_ids: set[str]) -> tuple[list[dict], dict]:
   results = []
   stats = {
     "no_id": 0,
+    "skipped": 0,
     "fetch_failed": 0,
     "fetch_failed_items": [],
   }
@@ -96,6 +110,11 @@ def collect_video_infos(entries: list) -> tuple[list[dict], dict]:
     video_id = entry.get("id")
     if not video_id:
       stats["no_id"] += 1
+      continue
+
+    if video_id in existing_ids:
+      stats["skipped"] += 1
+      print(f"スキップ（既存）: {video_id}")
       continue
 
     video_url = f"{constants.YOUTUBE_BASE_URL}{video_id}"
