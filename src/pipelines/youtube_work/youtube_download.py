@@ -1,4 +1,3 @@
-import csv
 import traceback
 from datetime import datetime
 from pathlib import Path
@@ -10,6 +9,7 @@ configure_ssl_certs()
 import yt_dlp
 
 from src.config import constants, settings
+from src.utils.csv_utils import read_video_ids_from_csv
 from src.utils.work_paths import WorkPaths
 from src.utils.yt_dlp_opts import merge_ydl_opts
 
@@ -23,12 +23,6 @@ def _ensure_raw_videos_dir() -> None:
 
 def _ensure_log_dir() -> None:
   LOG_DIR.mkdir(parents=True, exist_ok=True)
-
-
-def read_video_ids_from_csv(csv_path: str) -> list[str]:
-  print("STEP1:CSV読み込み")
-  with open(csv_path, newline="", encoding=settings.ENCODING) as f:
-    return [row[0] for row in csv.reader(f) if row]
 
 
 def _is_already_downloaded(youtube_id: str) -> bool:
