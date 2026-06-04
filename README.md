@@ -44,6 +44,9 @@ python -m src.pipelines.youtube_work.youtube_download
 ```
 python -m src.pipelines.youtube_work.youtube_movie_extrac
 ```
+4. AI実行
+   1. python -m src.prompts.step1.main
+   2. python -m src.prompts.step2.main
 
 ---
 ## ディレクトリ構成ガイドライン
@@ -241,3 +244,4 @@ archive/
 ```
 
 旧データ・退避領域。
+
