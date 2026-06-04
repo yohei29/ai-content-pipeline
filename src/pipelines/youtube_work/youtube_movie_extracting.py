@@ -157,6 +157,7 @@ def _write_run_log(
     f"対象件数: {stats['total']}",
     f"  成功: {stats['succeeded']}",
     f"  失敗: {stats['failed']}",
+    f"  スキップ: {stats['skipped']}",
   ]
 
   if stats["succeeded_items"]:
@@ -196,11 +197,18 @@ def main() -> None:
     "total": len(youtube_ids),
     "succeeded": 0,
     "failed": 0,
+    "skipped": 0,
     "succeeded_items": [],
     "failed_items": [],
   }
 
   for youtube_id in youtube_ids:
+    transcript_path = Path(WorkPaths.get_audio_transcripts_text_path(youtube_id))
+    if transcript_path.is_file():
+      print(f"スキップ: {youtube_id} (トランスクリプト出力済み: {transcript_path})")
+      stats["skipped"] += 1
+      continue
+
     try:
       item = _process_video(youtube_id, model)
       stats["succeeded"] += 1

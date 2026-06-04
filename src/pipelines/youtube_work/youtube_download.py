@@ -26,7 +26,10 @@ def _ensure_log_dir() -> None:
 
 
 def _is_already_downloaded(youtube_id: str) -> bool:
-  return Path(WorkPaths.get_movie_data_file_path(youtube_id)).is_file()
+  return (
+    Path(WorkPaths.get_movie_data_file_path(youtube_id)).is_file()
+    or Path(WorkPaths.put_archive_movie_path(youtube_id)).is_file()
+  )
 
 
 def _download_video(youtube_id: str) -> None:
