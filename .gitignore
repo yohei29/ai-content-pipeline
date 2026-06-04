@@ -64,6 +64,10 @@ data/raw/thumbnails/
 data/processed/transcripts/
 data/processed/embeddings/
 
+# Movie score outputs
+data/processed/movie_score/
+archive/movie_score/
+
 # Large exports
 data/exports/
 
