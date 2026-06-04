@@ -16,7 +16,7 @@ def get_adopted_video_ids_from_score(score_csv_path: str) -> list[str]:
     reader = csv.reader(f)
     next(reader, None)  # ヘッダースキップ
     for row in reader:
-      if len(row) >= 7 and row[6].strip() == "採用":
+      if len(row) >= 7 and row[0].strip() and row[6].strip() == "採用":
         adopted.append(row[0].strip())
   return adopted
 
