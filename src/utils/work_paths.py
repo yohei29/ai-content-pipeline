@@ -29,3 +29,9 @@ class WorkPaths:
 
   def get_prompts_step_ai_response_file_path(youtube_id, ai_response_file):
     return f"{constants.AI_RESPONSE_DIR}{youtube_id}_{ai_response_file}"
+
+  def get_movie_score_output_path():
+    return f"{constants.MOVIE_SCORE_OUTPUT_DIR}{constants.MOVIE_SCORE_OUTPUT_FILE}"
+
+  def get_movie_score_prompt_file_path():
+    return f"{constants.MOVIE_SCORE_WORK_DIR}{constants.PROMPT_FILE}"

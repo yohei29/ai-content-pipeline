@@ -110,3 +110,4 @@ data/exports/
 secrets.json
 credentials.json
 service_account.json
+*cookies.txt
